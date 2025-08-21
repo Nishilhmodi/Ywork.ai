@@ -1,0 +1,37 @@
+# Task 3
+
+def maximalRectangle(matrix):
+    if not matrix: 
+        return 0
+
+    rows = len(matrix)
+    cols = len(matrix[0])
+    max_area = 0
+
+    # prefix sum of heights
+    heights = [0] * cols
+
+    for r in range(rows):
+        for c in range(cols):
+            if matrix[r][c] == "1":
+                heights[c] += 1
+            else:
+                heights[c] = 0
+
+        # brute force check for rectangles in this histogram
+        for i in range(cols):
+            min_height = float("inf")
+            for j in range(i, cols):
+                min_height = min(min_height, heights[j])
+                max_area = max(max_area, min_height * (j - i + 1))
+
+    return max_area
+
+matrix = [
+    ["1","0","1","0","0"],
+    ["1","0","1","1","1"],
+    ["1","1","1","1","1"],
+    ["1","0","0","1","0"]
+]
+
+print("Largest rectangle area:", maximalRectangle(matrix))
