@@ -1,0 +1,48 @@
+# Task 1
+
+def solveSudoku(board):
+    def is_valid(row, column, ch):
+        # check row and column
+        for i in range(9):
+            if board[row][i] == ch or board[i][column] == ch:
+                return False
+        
+        # check 3x3 sub-box
+        box_r = 3 * (row // 3)
+        box_c = 3 * (column // 3)
+        for i in range(3):
+            for j in range(3):
+                if board[box_r + i][box_c + j] == ch:
+                    return False
+        return True
+
+    def backtrack():
+        for row in range(9):
+            for column in range(9):
+                if board[row][column] == '.':  # empty cell
+                    for ch in "123456789":
+                        if is_valid(row, column, ch):
+                            board[row][column] = ch
+                            if backtrack():
+                                return True
+                            board[row][column] = '.'  # undo (backtrack)
+                    return False
+        return True
+
+    backtrack()
+    
+board = [
+    ["5","3",".",".","7",".",".",".","."],
+    ["6",".",".","1","9","5",".",".","."],
+    [".","9","8",".",".",".",".","6","."],
+    ["8",".",".",".","6",".",".",".","3"],
+    ["4",".",".","8",".","3",".",".","1"],
+    ["7",".",".",".","2",".",".",".","6"],
+    [".","6",".",".",".",".","2","8","."],
+    [".",".",".","4","1","9",".",".","5"],
+    [".",".",".",".","8",".",".","7","9"]
+]
+
+solveSudoku(board)
+for row in board:
+    print(row)
